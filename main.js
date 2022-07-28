@@ -1,8 +1,9 @@
-var candies = ["Blue", "Orange", "Green", "Yellow", "Red", "Purple"];
+var candies = ["bcoin", "scoin", "gcoin", "cbag", "chest1", "chest2", "chest3"];
 var board = []
 var rows = 9;
 var columns = 9;
 var score = 0;
+var turns = 10;
 
 var currTile; //piece clicking on
 var otherTile; //piece swapping with
@@ -45,7 +46,6 @@ function startGame() {
         }
         board.push(row);
     }
-
     console.log(board);
 }
 
@@ -105,17 +105,165 @@ function dragEnd() {
         let otherImg = otherTile;
         currTile.src = otherImg;
         otherTile.src = currImg;
+        }
     }
-    }
+    // turns -= 1; // only subtract from turns if crushThree 
+    // if (crushFive) {
+    //     turns += 1;
+    // } 
+    // if (crushFour) {
+    //     turns += 0;
+    // }
+    // if (crushThree) {
+    //     turns -= 1; 
+    // }
+
+    // also include function upon drag end, generate next tier tile
 }
 // crush tiles functions
 function crushCandy() {
+    crushFive();
+    crushFour();
     crushThree();
-    // crushFour();
-    // crushFive();
     document.getElementById("score").innerText = score; // score
+    document.getElementById("turns").innerText = turns; // turns
 }
-
+// crushFive function
+function crushFive() {
+    //check rows
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns-4; c++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c+1];
+            let candy3 = board[r][c+2];
+            let candy4 = board[r][c+3];
+            let candy5 = board[r][c+4]
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && !candy1.src.includes("blank")) {
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                candy4.src = "./images/blank.png";
+                candy5.src = "./images/blank.png";
+                score += 50;
+                turns += 1;
+            }
+        }
+    }    
+    //check columns
+    for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < rows-4; r++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r+1][c];
+            let candy3 = board[r+2][c];
+            let candy4 = board[r+3][c];
+            let candy5 = board[r+4][c];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && !candy1.src.includes("blank")) {
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                candy4.src = "./images/blank.png";
+                candy5.src = "./images/blank.png";
+                score += 50;
+                turns += 1;
+            }
+        }
+    }
+}
+// crushFive valid move check function
+function checkValid() {
+    //check rows
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns-4; c++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c+1];
+            let candy3 = board[r][c+2];
+            let candy4 = board[r][c+3];
+            let candy5 = board[r][c+4];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && !candy1.src.includes("blank")) {
+                return true;
+            }
+        }
+    }
+    //check columns
+    for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < rows-4; r++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r+1][c];
+            let candy3 = board[r+2][c];
+            let candy4 = board[r+3][c];
+            let candy5 = board[r+4][c];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && !candy1.src.includes("blank")) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+// crushFour function
+function crushFour() {
+    //check rows
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns-3; c++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c+1];
+            let candy3 = board[r][c+2];
+            let candy4 = board[r][c+3];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && !candy1.src.includes("blank")) {
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                candy4.src = "./images/blank.png";
+                score += 40;
+                turns += 0;
+            }
+        }
+    }
+    //check columns
+    for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < rows-3; r++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r+1][c];
+            let candy3 = board[r+2][c];
+            let candy4 = board[r+3][c];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && !candy1.src.includes("blank")) {
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                candy4.src = "./images/blank.png";
+                score += 40;
+                turns += 0;
+            }
+        }
+    }
+}
+// crushFour valid move check function
+function checkValid() {
+    //check rows
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns-3; c++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c+1];
+            let candy3 = board[r][c+2];
+            let candy4 = board[r][c+3];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && !candy1.src.includes("blank")) {
+                return true;
+            }
+        }
+    }
+    //check columns
+    for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < rows-3; r++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r+1][c];
+            let candy3 = board[r+2][c];
+            let candy4 = board[r+3][c];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && !candy1.src.includes("blank")) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 //crushThree function
 function crushThree() {
     //check rows
@@ -129,61 +277,27 @@ function crushThree() {
                 candy2.src = "./images/blank.png";
                 candy3.src = "./images/blank.png";
                 score += 30;
+                // turns -= 1; // should only be removing turn on first initial move NOT all
             }
         }
     }
-        //check columns
-        for (let c = 0; c < columns; c++) {
-            for (let r = 0; r < rows-2; r++) {
-                let candy1 = board[r][c];
-                let candy2 = board[r+1][c];
-                let candy3 = board[r+2][c];
-                if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                    candy1.src = "./images/blank.png";
-                    candy2.src = "./images/blank.png";
-                    candy3.src = "./images/blank.png";
-                    score += 30;
-                }
+    //check columns
+    for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < rows-2; r++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r+1][c];
+            let candy3 = board[r+2][c];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                score += 30;
+                // turns -= 1; // should only be removing turn on first initial move NOT all
             }
         }
     }
-//crushFour function
-// function crushFour() {
-//     //check rows
-//     for (let r = 0; r < rows; r++) {
-//         for (let c = 0; c < columns-3; c++) {
-//             let candy1 = board[r][c];
-//             let candy2 = board[r][c+1];
-//             let candy3 = board[r][c+2];
-//             let candy4 = board[r][c+3];
-//             if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && !candy1.src.includes("blank")) {
-//                 candy1.src = "./images/blank.png";
-//                 candy2.src = "./images/blank.png";
-//                 candy3.src = "./images/blank.png";
-//                 candy4.src = "./images/blank.png";
-//                 score += 40;
-//             }
-//         }
-//     }
-//     //check columns
-//     for (let c = 0; c < columns; c++) {
-//         for (let r = 0; r < rows-3; r++) {
-//             let candy1 = board[r][c];
-//             let candy2 = board[r+1][c];
-//             let candy3 = board[r+2][c];
-//             let candy4 = board[r+3][c];
-//             if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && !candy1.src.includes("blank")) {
-//                 candy1.src = "./images/blank.png";
-//                 candy2.src = "./images/blank.png";
-//                 candy3.src = "./images/blank.png";
-//                 candy4.src = "./images/blank.png";
-//                 score += 40;
-//             }
-//         }
-//     }
-// }
-
-// valid move check functions
+}
+// crushThree valid move check function
 function checkValid() {
     //check rows
     for (let r = 0; r < rows; r++) {
@@ -207,113 +321,8 @@ function checkValid() {
             }
         }
     }
-
     return false;
 }
-
-// function checkValid() {
-//     //check rows
-//     for (let r = 0; r < rows; r++) {
-//         for (let c = 0; c < columns-3; c++) {
-//             let candy1 = board[r][c];
-//             let candy2 = board[r][c+1];
-//             let candy3 = board[r][c+2];
-//             let candy4 = board[r][c+3];
-//             if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && !candy1.src.includes("blank")) {
-//                 return true;
-//             }
-//         }
-//     }
-//     //check columns
-//     for (let c = 0; c < columns; c++) {
-//         for (let r = 0; r < rows-3; r++) {
-//             let candy1 = board[r][c];
-//             let candy2 = board[r+1][c];
-//             let candy3 = board[r+2][c];
-//             let candy4 = board[r+3][c];
-//             if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src &&!candy1.src.includes("blank")) {
-//                 return true;
-//             }
-//         }
-//     }
-
-//     return false;
-// }
-
-// // crushFive function
-// function crushFive() {
-//     //check rows
-//     for (let r = 0; r < rows; r++) {
-//         for (let c = 0; c < columns-4; c++) {
-//             let candy1 = board[r][c];
-//             let candy2 = board[r][c+1];
-//             let candy3 = board[r][c+2];
-//             let candy4 = board[r][c+3];
-//             let candy5 = board[r][c+4]
-//             if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src &&!candy1.src.includes("blank")) {
-//                 candy1.src = "./images/blank.png";
-//                 candy2.src = "./images/blank.png";
-//                 candy3.src = "./images/blank.png";
-//                 candy4.src = "./images/blank.png";
-//                 candy5.src = "./images/blank.png";
-//                 score += 50;
-//             }
-//         }
-//     }
-    
-//     //check columns
-//     for (let c = 0; c < columns; c++) {
-//         for (let r = 0; r < rows-4; r++) {
-//             let candy1 = board[r][c];
-//             let candy2 = board[r+1][c];
-//             let candy3 = board[r+2][c];
-//             let candy4 = board[r+3][c];
-//             let candy5 = board[r+4][c];
-//             if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src &&!candy1.src.includes("blank")) {
-//                 candy1.src = "./images/blank.png";
-//                 candy2.src = "./images/blank.png";
-//                 candy3.src = "./images/blank.png";
-//                 candy4.src = "./images/blank.png";
-//                 candy5.src = "./images/blank.png";
-//                 score += 50;
-//             }
-//         }
-//     }
-// }
-
-// function checkValid() {
-//     //check rows
-//     for (let r = 0; r < rows; r++) {
-//         for (let c = 0; c < columns-4; c++) {
-//             let candy1 = board[r][c];
-//             let candy2 = board[r][c+1];
-//             let candy3 = board[r][c+2];
-//             let candy4 = board[r][c+3];
-//             let candy5 = board[r][c+4];
-//             if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && !candy1.src.includes("blank")) {
-//                 return true;
-//             }
-//         }
-//     }
-
-//     //check columns
-//     for (let c = 0; c < columns; c++) {
-//         for (let r = 0; r < rows-4; r++) {
-//             let candy1 = board[r][c];
-//             let candy2 = board[r+1][c];
-//             let candy3 = board[r+2][c];
-//             let candy4 = board[r+3][c];
-//             let candy5 = board[r+4][c];
-//             if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src &&!candy1.src.includes("blank")) {
-//                 return true;
-//             }
-//         }
-//     }
-
-//     return false;
-// }
-
-
 // slide tiles function
 function slideCandy() {
     for (let c = 0; c < columns; c++) {
@@ -324,13 +333,11 @@ function slideCandy() {
                 ind -= 1;
             }
         }
-
         for (let r = ind; r >=0; r--) {
             board[r][c].src = "./images/blank.png";
         }
     }
 }
-
 // generate tiles function
 function generateCandy() {
     for (let c = 0; c < columns; c++) {
