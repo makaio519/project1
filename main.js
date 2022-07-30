@@ -1,3 +1,10 @@
+/*
+MECHANICS TO IMPLEMENT
+when crush candy generate next tier tile 
+only subtract from initial crushThree move initiated by player 
+
+*/
+
 var candies = ["bcoin", "scoin", "gcoin", "cbag", "chest1", "chest2", "chest3"];
 var board = []
 var rows = 9;
@@ -31,7 +38,13 @@ function startGame() {
             //<img id="0-0" src="./images/Red.png">
             let tile = document.createElement("img")
             tile.id = r.toString() + "-" + c.toString();
-            tile.src = "./images/" + randomCandy() + ".png";
+            let candyType = randomCandy(); // intermediate variable constant candy 
+            // assign random candy to candyname 
+            // 
+            tile.src = "./images/" + candyType + ".png";
+            tile.candyId = candies.indexOf(candyType);
+            // tile id 
+
 
             // Event listeners
             tile.addEventListener("dragstart", dragStart); //click on a piece, initialize drag process 
@@ -81,9 +94,9 @@ function dragEnd() {
     let r = parseInt(currCoords[0]);
     let c = parseInt(currCoords[1]);
     //other row and column coordinates
-    let otherCorods = otherTile.id.split("-");
-    let r2 = parseInt(otherCorods[0]);
-    let c2 = parseInt(otherCorods[1]);
+    let otherCoords = otherTile.id.split("-");
+    let r2 = parseInt(otherCoords[0]);
+    let c2 = parseInt(otherCoords[1]);
     // check for adjacency
     let moveLeft = c2 == c-1 && r == r2; 
     let moveRight = c2 == c+1 && r == r2;
@@ -102,18 +115,17 @@ function dragEnd() {
     let validMove = checkValid();
     if (!validMove) {
         let currImg = currTile.src;
-        let otherImg = otherTile;
-        currTile.src = otherImg;
-        otherTile.src = currImg;
-        }
-    }
-    // turns -= 1; // only subtract from turns if crushThree 
-    // if (crushFive) {
-    //     turns += 1;
-    // } 
-    // if (crushFour) {
-    //     turns += 0;
-    // }
+        let otherImg = otherTile.src; 
+        
+        currTile.src = otherImg; //   "./images/scoin.png"
+        otherTile.src = currImg; // 
+        const currTileId = currtile.candyId
+
+        currTile.candyId = otherTile.candyId 
+        otherTile.candyId = currTileId
+
+    } 
+}
     // if (crushThree) {
     //     turns -= 1; 
     // }
@@ -276,6 +288,10 @@ function crushThree() {
                 candy1.src = "./images/blank.png";
                 candy2.src = "./images/blank.png";
                 candy3.src = "./images/blank.png";
+                // let otherCoords = otherTile.id.split("-");
+                let currCoords = currTile.id.split("-");
+                upgradeTile(currCoords[0], currCoords[1], currTile.candyId);
+                // upgradeTile(currTile, c2, otherTile.candyId);
                 score += 30;
                 // turns -= 1; // should only be removing turn on first initial move NOT all
             }
@@ -291,6 +307,9 @@ function crushThree() {
                 candy1.src = "./images/blank.png";
                 candy2.src = "./images/blank.png";
                 candy3.src = "./images/blank.png";
+                let currCoords = currTile.id.split("-");
+                upgradeTile(currCoords[0], currCoords[1], currTile.candyId);
+                // upgradeTile(currTile, c2, otherTile.candyId);
                 score += 30;
                 // turns -= 1; // should only be removing turn on first initial move NOT all
             }
@@ -323,6 +342,14 @@ function checkValid() {
     }
     return false;
 }
+
+// Upgrade tile function here
+function upgradeTile(row, column, idx) {
+    if (idx < 6) {
+        board[row][column].src = "./images/" + candies[idx+1] + ".png";
+    }
+}
+
 // slide tiles function
 function slideCandy() {
     for (let c = 0; c < columns; c++) {
@@ -338,6 +365,9 @@ function slideCandy() {
         }
     }
 }
+
+// 
+
 // generate tiles function
 function generateCandy() {
     for (let c = 0; c < columns; c++) {
