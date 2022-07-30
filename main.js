@@ -126,19 +126,97 @@ function dragEnd() {
     } 
     turns -=1;
 }
-    // if (crushThree) {
-    //     turns -= 1; 
-    // }
-
-    // also include function upon drag end, generate next tier tile
+}
+function endGame() {
+    if (turns === 0) {
+        isGameOver = true;
+        alert("Game Over!");
+        return;
+    } else {
+        isGameOver = false;
+    }        
 }
 // crush tiles functions
 function crushCandy() {
+    // crushSix();
+    // crushFiveL();
+    crushFiveT();
     crushFive();
     crushFour();
     crushThree();
     document.getElementById("score").innerText = score; // score
     document.getElementById("turns").innerText = turns; // turns
+}
+// crushFiveT function
+function crushFiveT() {
+    //check variation 1
+    for (let r = 0; r < rows-3; r++) {
+        for (let c = 0; c < columns-3; c++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c+1];
+            let candy3 = board[r][c+2];
+            let candy4 = board[r+1][c+1];
+            let candy5 = board[r+2][c+1];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && !candy1.src.includes("blank")) {
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                candy4.src = "./images/blank.png";
+                candy5.src = "./images/blank.png";
+                score += 50;
+                turns += 2;
+            }
+        }
+    }    
+    //check variation 2
+    for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < rows-4; r++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c+1];
+            let candy3 = board[r][c+2];
+            let candy4 = board[r-1][c+2];
+            let candy5 = board[r+1][c+2];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && !candy1.src.includes("blank")) {
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                candy4.src = "./images/blank.png";
+                candy5.src = "./images/blank.png";
+                score += 50;
+                turns += 2;
+            }
+        }
+    }
+}
+// crushFiveT valid move check function
+function checkValid() {
+    //check variation1
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns-3; c++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c+1];
+            let candy3 = board[r][c+2];
+            let candy4 = board[r+1][c+1];
+            let candy5 = board[r+2][c+1];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && !candy1.src.includes("blank")) {
+                return true;
+            }
+        }
+    }
+    //check variation2
+    for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < rows-3; r++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c+1];
+            let candy3 = board[r][c+2];
+            let candy4 = board[r-1][c+2];
+            let candy5 = board[r+1][c+2];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && !candy1.src.includes("blank")) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 // crushFive function
 function crushFive() {
@@ -293,7 +371,6 @@ function crushThree() {
                 upgradeTile(currCoords[0], currCoords[1], currTile.candyId);
                 // upgradeTile(currTile, c2, otherTile.candyId);
                 score += 30;
-                // turns -= 1; // should only be removing turn on first initial move NOT all
             }
         }
     }
@@ -309,9 +386,7 @@ function crushThree() {
                 candy3.src = "./images/blank.png";
                 let currCoords = currTile.id.split("-");
                 upgradeTile(currCoords[0], currCoords[1], currTile.candyId);
-                // upgradeTile(currTile, c2, otherTile.candyId);
                 score += 30;
-                // turns -= 1; // should only be removing turn on first initial move NOT all
             }
         }
     }
