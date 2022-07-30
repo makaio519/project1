@@ -123,8 +123,8 @@ function dragEnd() {
 
         currTile.candyId = otherTile.candyId 
         otherTile.candyId = currTileId
-
     } 
+    turns -=1;
 }
     // if (crushThree) {
     //     turns -= 1; 
@@ -157,7 +157,7 @@ function crushFive() {
                 candy4.src = "./images/blank.png";
                 candy5.src = "./images/blank.png";
                 score += 50;
-                turns += 1;
+                turns += 2;
             }
         }
     }    
@@ -176,7 +176,7 @@ function crushFive() {
                 candy4.src = "./images/blank.png";
                 candy5.src = "./images/blank.png";
                 score += 50;
-                turns += 1;
+                turns += 2;
             }
         }
     }
@@ -226,7 +226,7 @@ function crushFour() {
                 candy3.src = "./images/blank.png";
                 candy4.src = "./images/blank.png";
                 score += 40;
-                turns += 0;
+                turns += 1;
             }
         }
     }
@@ -243,7 +243,7 @@ function crushFour() {
                 candy3.src = "./images/blank.png";
                 candy4.src = "./images/blank.png";
                 score += 40;
-                turns += 0;
+                turns += 1;
             }
         }
     }
