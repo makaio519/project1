@@ -1,11 +1,11 @@
 /*
 MECHANICS TO IMPLEMENT
 when crush candy generate next tier tile 
-only subtract from initial crushThree move initiated by player 
-
+TURN SYSTEM
 */
 
 var candies = ["bcoin", "scoin", "gcoin", "cbag", "chest1", "chest2", "chest3"];
+// var chests = ["chest1", "chest2", chest3]
 var board = []
 var rows = 9;
 var columns = 9;
@@ -14,7 +14,6 @@ var turns = 10;
 
 var currTile; //piece clicking on
 var otherTile; //piece swapping with
-
 
 window.onload = function() {
     startGame(); 
@@ -44,7 +43,6 @@ function startGame() {
             tile.src = "./images/" + candyType + ".png";
             tile.candyId = candies.indexOf(candyType);
             // tile id 
-
 
             // Event listeners
             tile.addEventListener("dragstart", dragStart); //click on a piece, initialize drag process 
@@ -125,8 +123,9 @@ function dragEnd() {
         otherTile.candyId = currTileId
     } 
     turns -=1;
+    }
 }
-}
+// endGame function FIX PLS
 function endGame() {
     if (turns === 0) {
         isGameOver = true;
@@ -138,9 +137,15 @@ function endGame() {
 }
 // crush tiles functions
 function crushCandy() {
-    // crushSix();
+    crushSix();
     // crushFiveL();
-    // crushFiveT();
+    // crushFiveLv1();
+    // crushFiveLv2();
+    // crushFiveLv3();
+    crushFiveT();
+    // crushFiveTv1();
+    // crushFiveTv2();
+    // crushFivev3();
     crushFive();
     crushFour();
     crushThree();
