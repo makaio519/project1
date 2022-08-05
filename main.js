@@ -10,7 +10,7 @@ var board = []
 var rows = 9;
 var columns = 9;
 var score = 0;
-var turns = 10;
+var turns = 2;
 
 var currTile; //piece clicking on
 var otherTile; //piece swapping with
@@ -54,6 +54,7 @@ function startGame() {
 
             document.getElementById("board").append(tile);
             row.push(tile);
+            endGame();
         }
         board.push(row);
     }
@@ -137,12 +138,12 @@ function endGame() {
 }
 // crush tiles functions
 function crushCandy() {
-    crushSix();
+    // crushSix();
     // crushFiveL();
     // crushFiveLv1();
     // crushFiveLv2();
     // crushFiveLv3();
-    crushFiveT();
+    // crushFiveT();
     // crushFiveTv1();
     // crushFiveTv2();
     // crushFivev3();
@@ -152,81 +153,81 @@ function crushCandy() {
     document.getElementById("score").innerText = score; // score
     document.getElementById("turns").innerText = turns; // turns
 }
-//crushSix function
-function crushSix() {
-    //check rows
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns-6; c++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r][c+1];
-            let candy3 = board[r][c+2];
-            let candy4 = board[r][c+3];
-            let candy5 = board[r][c+4];
-            let candy6 = board[r][c+5];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && candy5.src == candy6.src && !candy1.src.includes("blank")) {
-                candy1.src = "./images/blank.png";
-                candy2.src = "./images/blank.png";
-                candy3.src = "./images/blank.png";
-                candy4.src = "./images/blank.png";
-                candy5.src = "./images/blank.png";
-                candy6.src = "./images/blank.png";
-                // let otherCoords = otherTile.id.split("-");
-                let currCoords = currTile.id.split("-");
-                upgradeTile(currCoords[0], currCoords[1], currTile.candyId);
-                // upgradeTile(currTile, c2, otherTile.candyId);
-                score += 60;    
-            }
-        }
-    }
-    //check columns
-    for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows-6; r++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r+1][c];
-            let candy3 = board[r+2][c];
-            let candy4 = board[r+3][c];
-            let candy5 = board[r+4][c];
-            let candy6 = board[r+5][c];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && candy5.src == candy6.src && !candy1.src.includes("blank")) {
-                candy1.src = "./images/blank.png";
-                candy2.src = "./images/blank.png";
-                candy3.src = "./images/blank.png";
-                candy4.src = "./images/blank.png";
-                candy5.src = "./images/blank.png";
-                candy6.src = "./images/blank.png";
-                let currCoords = currTile.id.split("-");
-                upgradeTile(currCoords[0], currCoords[1], currTile.candyId);
-                score += 60;
-            }
-        }
-    }
-}
-// crushThree valid move check function
-function checkValid() {
-    //check rows
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns-2; c++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r][c+1];
-            let candy3 = board[r][c+2];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                return true;
-            }
-        }
-    }
-    //check columns
-    for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows-2; r++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r+1][c];
-            let candy3 = board[r+2][c];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
+// //crushSix function
+// function crushSix() {
+//     //check rows
+//     for (let r = 0; r < rows; r++) {
+//         for (let c = 0; c < columns-6; c++) {
+//             let candy1 = board[r][c];
+//             let candy2 = board[r][c+1];
+//             let candy3 = board[r][c+2];
+//             let candy4 = board[r][c+3];
+//             let candy5 = board[r][c+4];
+//             let candy6 = board[r][c+5];
+//             if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && candy5.src == candy6.src && !candy1.src.includes("blank")) {
+//                 candy1.src = "./images/blank.png";
+//                 candy2.src = "./images/blank.png";
+//                 candy3.src = "./images/blank.png";
+//                 candy4.src = "./images/blank.png";
+//                 candy5.src = "./images/blank.png";
+//                 candy6.src = "./images/blank.png";
+//                 // let otherCoords = otherTile.id.split("-");
+//                 let currCoords = currTile.id.split("-");
+//                 upgradeTile(currCoords[0], currCoords[1], currTile.candyId);
+//                 // upgradeTile(currTile, c2, otherTile.candyId);
+//                 score += 60;    
+//             }
+//         }
+//     }
+//     //check columns
+//     for (let c = 0; c < columns; c++) {
+//         for (let r = 0; r < rows-6; r++) {
+//             let candy1 = board[r][c];
+//             let candy2 = board[r+1][c];
+//             let candy3 = board[r+2][c];
+//             let candy4 = board[r+3][c];
+//             let candy5 = board[r+4][c];
+//             let candy6 = board[r+5][c];
+//             if (candy1.src == candy2.src && candy2.src == candy3.src && candy3.src == candy4.src && candy4.src == candy5.src && candy5.src == candy6.src && !candy1.src.includes("blank")) {
+//                 candy1.src = "./images/blank.png";
+//                 candy2.src = "./images/blank.png";
+//                 candy3.src = "./images/blank.png";
+//                 candy4.src = "./images/blank.png";
+//                 candy5.src = "./images/blank.png";
+//                 candy6.src = "./images/blank.png";
+//                 let currCoords = currTile.id.split("-");
+//                 upgradeTile(currCoords[0], currCoords[1], currTile.candyId);
+//                 score += 60;
+//             }
+//         }
+//     }
+// // }
+// // crushThree valid move check function
+// function checkValid() {
+//     //check rows
+//     for (let r = 0; r < rows; r++) {
+//         for (let c = 0; c < columns-2; c++) {
+//             let candy1 = board[r][c];
+//             let candy2 = board[r][c+1];
+//             let candy3 = board[r][c+2];
+//             if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+//                 return true;
+//             }
+//         }
+//     }
+//     //check columns
+//     for (let c = 0; c < columns; c++) {
+//         for (let r = 0; r < rows-2; r++) {
+//             let candy1 = board[r][c];
+//             let candy2 = board[r+1][c];
+//             let candy3 = board[r+2][c];
+//             if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+//                 return true;
+//             }
+//         }
+//     }
+//     return false;
+// }
 // // crushFiveT function
 // function crushFiveT() {
 //     //check variation 1
