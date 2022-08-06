@@ -10,31 +10,33 @@ var board = []
 var rows = 9;
 var columns = 9;
 var score = 0;
-var turns = 2;
+var turns = 10;
 
-var currTile; //piece clicking on
-var otherTile; //piece swapping with
+var currTile; // piece clicking on
+var otherTile; // piece swapping with
 
+// when webpage loads
 window.onload = function() {
     startGame(); 
 
-    // 1/10 of a second 
     window.setInterval(function(){
         crushCandy();
-        slideCandy(); //everytime crush candy, slide candies down
-        generateCandy(); //generate candy after slides
-    }, 100);
+        upgradeTile();
+        slideCandy(); // everytime crush candy, slide candies down
+        generateCandy(); // generate candy after slides
+    }, 100); // repeat process every 1/10 of a second
 }
 
 function randomCandy() {
-    return candies[Math.floor(Math.random() * candies.length)]; //0 - 5.99
+    return candies[Math.floor(Math.random() * candies.length)]; // 0 - 5.99
 }
-
+// initialize board
 function startGame() {
     for (let r = 0; r < rows; r++) {
         let row = [];
         for (let c = 0; c < columns; c++) {
-            //<img id="0-0" src="./images/Red.png">
+            // <img id="0-0" src="./images/Red.png">
+            // each img tag has a coordinate indicating what row and column a piece is located in
             let tile = document.createElement("img")
             tile.id = r.toString() + "-" + c.toString();
             let candyType = randomCandy(); // intermediate variable constant candy 
@@ -45,6 +47,7 @@ function startGame() {
             // tile id 
 
             // Event listeners
+            // Drag functionality 
             tile.addEventListener("dragstart", dragStart); //click on a piece, initialize drag process 
             tile.addEventListener("dragover", dragOver); //clicking on a piece, moving mouse to drag the piece
             tile.addEventListener("dragenter", dragEnter); //dragging piece onto another piece
@@ -52,9 +55,8 @@ function startGame() {
             tile.addEventListener("drop", dragDrop); //dropping piece over another piece
             tile.addEventListener("dragend", dragEnd); //after drag process completed, swap pieces
 
-            document.getElementById("board").append(tile);
+            document.getElementById("board").append(tile); // put tiles on the board
             row.push(tile);
-            endGame();
         }
         board.push(row);
     }
@@ -84,7 +86,7 @@ function dragDrop() {
 }
 
 function dragEnd() {
-    // don't swap candy with blank tile
+    // check to make sure you don't swap candy with blank tile
     if (currTile.src.includes("blank") || otherTile.src.includes("blank")) {
         return;
     }
@@ -106,10 +108,10 @@ function dragEnd() {
     let isAdjacent = moveLeft || moveRight || moveUp || moveDown;
     // ONLY swap if adjacent
     if (isAdjacent) {
-    let currImg = currTile.src;
-    let otherImg = otherTile.src;
-    currTile.src = otherImg;
-    otherTile.src = currImg;
+         let currImg = currTile.src;
+        let otherImg = otherTile.src;
+        currTile.src = otherImg;
+        otherTile.src = currImg;
     // when swap with candies, can crush at least 3 in a row or 3 in a column
     let validMove = checkValid();
     if (!validMove) {
@@ -442,7 +444,7 @@ function crushThree() {
             let candy1 = board[r][c];
             let candy2 = board[r][c+1];
             let candy3 = board[r][c+2];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) { // if the source is the same, crush candy, and leave blank tile
                 candy1.src = "./images/blank.png";
                 candy2.src = "./images/blank.png";
                 candy3.src = "./images/blank.png";
@@ -508,7 +510,7 @@ function upgradeTile(row, column, idx) {
 // slide tiles function
 function slideCandy() {
     for (let c = 0; c < columns; c++) {
-        let ind = rows - 1;
+        let ind = rows - 1; // check rows from bottom to top
         for (let r = columns-1; r >= 0; r --) {
             if (!board[r][c].src.includes("blank")) {
                 board[ind][c].src = board[r][c].src;
